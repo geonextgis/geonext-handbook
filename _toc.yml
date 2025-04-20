@@ -4,6 +4,7 @@
 format: jb-book
 root: index
 chapters:
+  - file: book/maize_leaf_disease_classification_using_ViT
   - file: book/markdown
   - file: book/notebooks
   - file: book/bibliography
