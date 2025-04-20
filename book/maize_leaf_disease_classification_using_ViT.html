@@ -1,0 +1,1719 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Maize Leaf Disease Classification using Vision Transformer (ViT) &#8212; GeoNext Handbook</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'book/maize_leaf_disease_classification_using_ViT';</script>
+    <link rel="canonical" href="https://geonextgis.github.io/geonext-handbook/book/maize_leaf_disease_classification_using_ViT.html" />
+    <link rel="icon" href="../_static/fav.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Markdown Files" href="markdown.html" />
+    <link rel="prev" title="Welcome to your Jupyter Book" href="../index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="GeoNext Handbook - Home"/>
+    <script>document.write(`<img src="../_static/logo.png" class="logo__image only-dark" alt="GeoNext Handbook - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Maize Leaf Disease Classification using Vision Transformer (ViT)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="markdown.html">Markdown Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks.html">Content with notebooks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/geonextgis/geonext-handbook/master?urlpath=tree/book/maize_leaf_disease_classification_using_ViT.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/geonextgis/geonext-handbook/blob/master/book/maize_leaf_disease_classification_using_ViT.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/geonextgis/geonext-handbook" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/geonextgis/geonext-handbook/edit/main/book/maize_leaf_disease_classification_using_ViT.ipynb" target="_blank"
+   class="btn btn-sm btn-source-edit-button dropdown-item"
+   title="Suggest edit"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="btn__text-container">Suggest edit</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/geonextgis/geonext-handbook/issues/new?title=Issue%20on%20page%20%2Fbook/maize_leaf_disease_classification_using_ViT.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/book/maize_leaf_disease_classification_using_ViT.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Maize Leaf Disease Classification using Vision Transformer (ViT)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#import-dependencies">Import Dependencies</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-the-configurations">Define the Configurations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-and-dataloader">Dataset and DataLoader</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-building">Model Building</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#patchembedding-class"><code class="docutils literal notranslate"><span class="pre">PatchEmbedding</span></code> class</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-head-attention-mha-block"><code class="docutils literal notranslate"><span class="pre">Multi-Head</span> <span class="pre">Attention</span></code> (MHA) Block</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlp-block"><code class="docutils literal notranslate"><span class="pre">MLP</span></code> Block</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transformerencoder-block"><code class="docutils literal notranslate"><span class="pre">TransformerEncoder</span></code> Block</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visiontransformer"><code class="docutils literal notranslate"><span class="pre">VisionTransformer</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training">Training</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#make-predictions">Make Predictions</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="maize-leaf-disease-classification-using-vision-transformer-vit">
+<h1>Maize Leaf Disease Classification using Vision Transformer (ViT)<a class="headerlink" href="#maize-leaf-disease-classification-using-vision-transformer-vit" title="Link to this heading">#</a></h1>
+<img src='https://imgs.search.brave.com/06oyAqYkjcVznl17oNdPhEMbiFV4DcV1YGrqbb52NGw/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9sZWFy/bm9wZW5jdi5jb20v/d3AtY29udGVudC91/cGxvYWRzLzIwMjMv/MDIvaW1hZ2UtOS0x/MDI0eDUzOC5wbmc'><section id="import-dependencies">
+<h2>Import Dependencies<a class="headerlink" href="#import-dependencies" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">glob</span><span class="w"> </span><span class="kn">import</span> <span class="n">glob</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torchvision</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch</span><span class="w"> </span><span class="kn">import</span> <span class="n">nn</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="n">random_split</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch.nn.functional</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">F</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torchvision</span><span class="w"> </span><span class="kn">import</span> <span class="n">transforms</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torchinfo</span><span class="w"> </span><span class="kn">import</span> <span class="n">summary</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">going_modular.going_modular</span><span class="w"> </span><span class="kn">import</span> <span class="n">engine</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">going_modular.going_modular.predictions</span><span class="w"> </span><span class="kn">import</span> <span class="n">pred_and_plot_image</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;font.family&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;DeJavu Serif&#39;</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;font.serif&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Times New Roman&#39;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
+
+<span class="n">device</span> <span class="o">=</span> <span class="s1">&#39;cuda&#39;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s1">&#39;cpu&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">device</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+
+<span class="c1"># Define the data directory</span>
+<span class="n">data_dir</span> <span class="o">=</span> <span class="s1">&#39;data&#39;</span>
+<span class="n">out_model_dir</span> <span class="o">=</span> <span class="s1">&#39;models&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>cuda 2.6.0+cu124
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="define-the-configurations">
+<h2>Define the Configurations<a class="headerlink" href="#define-the-configurations" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">IMG_SIZE</span> <span class="o">=</span> <span class="mi">256</span>
+<span class="n">NUM_CHANNELS</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">BATCH_SIZE</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="n">RANDOM_SEED</span> <span class="o">=</span> <span class="mi">42</span>
+
+<span class="c1"># Set the seeds</span>
+<span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">RANDOM_SEED</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">RANDOM_SEED</span><span class="p">)</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="n">RANDOM_SEED</span><span class="p">)</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="n">RANDOM_SEED</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="dataset-and-dataloader">
+<h2>Dataset and DataLoader<a class="headerlink" href="#dataset-and-dataloader" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Custom image dataset class</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ImageDataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class for loading simple text-based images into PyTorch datasets.</span>
+
+<span class="sd">    A text-based dataset where each image is associated with a label from a given</span>
+<span class="sd">    list of labels.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        data_dir: Path to directory containing &#39;images&#39; folder.</span>
+<span class="sd">        transform: Optional transformation function or list. Applied on each input</span>
+<span class="sd">        example (image) before being fed into the model.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">    - `len`: Number of images in dataset.</span>
+<span class="sd">    - `image_paths`: List of file paths for all images in the dataset.</span>
+<span class="sd">    - `labels`: List of corresponding labels for the images.</span>
+<span class="sd">    - `class_to_idx`: Dictionary mapping class labels to their respective indices.</span>
+
+<span class="sd">    To use this dataset, you would create an instance via:</span>
+<span class="sd">    ```python</span>
+<span class="sd">    dataset = ImageDataset(&quot;path/to/data&quot;)</span>
+<span class="sd">    ```</span>
+
+<span class="sd">    The `transform` parameter is optional and can be used to process each input example before feeding it into a</span>
+<span class="sd">    model. The returned examples are a tuple containing the transformed image and its corresponding label.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_dir</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_dir</span> <span class="o">=</span> <span class="n">data_dir</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transform</span> <span class="o">=</span> <span class="n">transform</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_paths</span> <span class="o">=</span> <span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_dir</span><span class="p">,</span> <span class="s1">&#39;images&#39;</span><span class="p">,</span> <span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="s1">&#39;*.jpg&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">class_to_idx</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_paths</span><span class="p">:</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">class_to_idx</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">class_to_idx</span><span class="p">[</span><span class="n">l</span><span class="p">]</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_paths</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+        <span class="n">image_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_paths</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
+        <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">image_path</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s1">&#39;RGB&#39;</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">:</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">image</span><span class="p">,</span> <span class="n">label</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the transforms</span>
+<span class="n">manual_transforms</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+    <span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">((</span><span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">)),</span>
+    <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">()</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create an image dataset object</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">ImageDataset</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_dir</span><span class="p">),</span> <span class="n">transform</span><span class="o">=</span><span class="n">manual_transforms</span><span class="p">)</span>
+
+<span class="c1"># Split the data into training and testing</span>
+<span class="n">train_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.8</span><span class="p">)</span>
+<span class="n">test_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span> <span class="o">-</span> <span class="n">train_size</span>
+
+<span class="n">train_dataset</span><span class="p">,</span> <span class="n">test_dataset</span> <span class="o">=</span> <span class="n">random_split</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="p">[</span><span class="n">train_size</span><span class="p">,</span> <span class="n">test_size</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of training images:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of testing images:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">))</span>
+
+<span class="c1"># Create dataloaders</span>
+<span class="n">train_dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pin_memory</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">test_dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">pin_memory</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">)</span><span class="o">//</span><span class="n">BATCH_SIZE</span><span class="si">}</span><span class="s1"> batches of </span><span class="si">{</span><span class="n">BATCH_SIZE</span><span class="si">}</span><span class="s1"> images in the training data.&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">)</span><span class="o">//</span><span class="n">BATCH_SIZE</span><span class="si">}</span><span class="s1"> batches of </span><span class="si">{</span><span class="n">BATCH_SIZE</span><span class="si">}</span><span class="s1"> images in the testing data.&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of training images: 3349
+Number of testing images: 838
+104 batches of 32 images in the training data.
+26 batches of 32 images in the testing data.
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot sample image</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">axes</span> <span class="o">=</span> <span class="n">axes</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">:</span>
+    <span class="n">random_id</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">))</span>
+    <span class="n">img</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">train_dataset</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">random_id</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+    <span class="n">label_name</span> <span class="o">=</span> <span class="p">[</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">dataset</span><span class="o">.</span><span class="n">class_to_idx</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">label</span> <span class="o">==</span> <span class="n">v</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">label_name</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/962b207b24902e43287027ca32f2a51d7e204a7261b518f9d1e3bce1f6625287.png" src="../_images/962b207b24902e43287027ca32f2a51d7e204a7261b518f9d1e3bce1f6625287.png" />
+</div>
+</div>
+</section>
+<section id="model-building">
+<h2>Model Building<a class="headerlink" href="#model-building" title="Link to this heading">#</a></h2>
+<section id="patchembedding-class">
+<h3><code class="docutils literal notranslate"><span class="pre">PatchEmbedding</span></code> class<a class="headerlink" href="#patchembedding-class" title="Link to this heading">#</a></h3>
+<p><strong>Patch embedding</strong> transforms an input image into a sequence of patch vectors, enabling the use of transformers for vision tasks.</p>
+<ul class="simple">
+<li><p>The image is split into non-overlapping patches (e.g., 16×16).</p></li>
+<li><p>Each patch is flattened and projected into a vector of fixed dimension using a <code class="docutils literal notranslate"><span class="pre">Conv2d</span></code> layer with <code class="docutils literal notranslate"><span class="pre">kernel_size</span> <span class="pre">=</span> <span class="pre">stride</span> <span class="pre">=</span> <span class="pre">patch_size</span></code>.</p></li>
+<li><p>The output is a sequence of patch embeddings with shape <code class="docutils literal notranslate"><span class="pre">(batch_size,</span> <span class="pre">num_patches,</span> <span class="pre">embedding_dim)</span></code>.</p></li>
+</ul>
+<p>This allows transformers to process images similarly to how they handle word tokens in NLP.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">PatchEmbedding</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts an input image into a sequence of patch embeddings for Vision Transformers.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        in_channels (int): Number of input image channels. Default is 3 (RGB).</span>
+<span class="sd">        patch_size (int): Size of each square patch (e.g., 16 for 16x16 patches).</span>
+<span class="sd">        embedding_dim (int): Dimension of the linear patch embedding.</span>
+<span class="sd">        image_size (int): Height/Width of the input image (assumes square input).</span>
+<span class="sd">        dropout (float): Dropout probability after embedding.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
+                 <span class="n">in_channels</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+                 <span class="n">patch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+                 <span class="n">embedding_dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">768</span><span class="p">,</span>
+                 <span class="n">image_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span>
+                 <span class="n">dropout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        
+        <span class="k">assert</span> <span class="n">image_size</span> <span class="o">%</span> <span class="n">patch_size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> \
+            <span class="sa">f</span><span class="s2">&quot;Image size (</span><span class="si">{</span><span class="n">image_size</span><span class="si">}</span><span class="s2">) must be divisible by patch size (</span><span class="si">{</span><span class="n">patch_size</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">patch_size</span> <span class="o">=</span> <span class="n">patch_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">embedding_dim</span> <span class="o">=</span> <span class="n">embedding_dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_patches</span> <span class="o">=</span> <span class="p">(</span><span class="n">image_size</span> <span class="o">//</span> <span class="n">patch_size</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+
+        <span class="c1"># Conv2d turns image into patch embeddings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">projection</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span>
+            <span class="n">in_channels</span><span class="o">=</span><span class="n">in_channels</span><span class="p">,</span>
+            <span class="n">out_channels</span><span class="o">=</span><span class="n">embedding_dim</span><span class="p">,</span>
+            <span class="n">kernel_size</span><span class="o">=</span><span class="n">patch_size</span><span class="p">,</span>
+            <span class="n">stride</span><span class="o">=</span><span class="n">patch_size</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Learnable class token</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cls_token</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="p">))</span>
+
+        <span class="c1"># Learnable positional embeddings (1 for [CLS] + num_patches)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">position_embedding</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_patches</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="n">dropout</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            x (Tensor): Input tensor of shape (B, C, H, W)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Tensor: Patch + class token embeddings of shape (B, N+1, D)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">B</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># Project patches</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">projection</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>                <span class="c1"># (B, D, H/P, W/P)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>      <span class="c1"># (B, N, D), where N = num_patches</span>
+
+        <span class="c1"># Add class token</span>
+        <span class="n">cls_token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cls_token</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span><span class="n">B</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># (B, 1, D)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="n">cls_token</span><span class="p">,</span> <span class="n">x</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>          <span class="c1"># (B, N+1, D)</span>
+
+        <span class="c1"># Add positional encoding and apply dropout</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">position_embedding</span>               <span class="c1"># (B, N+1, D)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s test it on a single image</span>
+<span class="c1"># Create an object of the PatchEmbedding class </span>
+<span class="n">patchify</span> <span class="o">=</span> <span class="n">PatchEmbedding</span><span class="p">(</span>
+    <span class="n">in_channels</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">patch_size</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span>
+    <span class="n">embedding_dim</span><span class="o">=</span><span class="mi">768</span><span class="p">,</span>
+    <span class="n">image_size</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span>
+    <span class="n">dropout</span><span class="o">=</span><span class="mf">0.3</span>
+<span class="p">)</span>
+
+<span class="c1"># Pass a single image through</span>
+<span class="n">image</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">train_dataset</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Input image shape:&#39;</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="n">patch_embedded_image</span> <span class="o">=</span> <span class="n">patchify</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Output patch embedding shape:&#39;</span><span class="p">,</span> <span class="n">patch_embedded_image</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Input image shape: torch.Size([3, 256, 256])
+Output patch embedding shape: torch.Size([1, 257, 768])
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># View the patch embedding and patch embedding shape</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">patch_embedded_image</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Patch embedding shape: </span><span class="si">{</span><span class="n">patch_embedded_image</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s1"> -&gt; [batch_size, number_of_patches, embedding_dimensions]&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([[[ 4.8488,  0.3113, -0.0000,  ..., -2.7804, -1.5810,  1.3166],
+         [ 0.4118,  0.0893, -0.0123,  ...,  0.0000, -1.0052,  0.0990],
+         [-0.0000,  0.0000, -1.1365,  ..., -0.0000, -0.0000, -0.2182],
+         ...,
+         [ 0.4836, -0.1265, -0.0000,  ..., -0.2648,  0.0000, -1.6243],
+         [ 0.1366,  0.8810,  0.9330,  ..., -1.2958, -0.6096,  1.2434],
+         [ 1.8575,  0.0000, -0.3810,  ..., -0.4288,  1.1905,  0.0000]]],
+       grad_fn=&lt;MulBackward0&gt;)
+Patch embedding shape: torch.Size([1, 257, 768]) -&gt; [batch_size, number_of_patches, embedding_dimensions]
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="multi-head-attention-mha-block">
+<h3><code class="docutils literal notranslate"><span class="pre">Multi-Head</span> <span class="pre">Attention</span></code> (MHA) Block<a class="headerlink" href="#multi-head-attention-mha-block" title="Link to this heading">#</a></h3>
+<p>Multi-Head Attention is a key component of transformer models that allows the network to attend to different parts of a sequence simultaneously from multiple representation subspaces.</p>
+<ul class="simple">
+<li><p><strong>Multiple heads</strong> learn different types of relationships in parallel.</p></li>
+<li><p>Each head performs scaled dot-product attention independently.</p></li>
+<li><p>The results from all heads are concatenated and linearly transformed.</p></li>
+</ul>
+<p>In Vision Transformers (ViT), MHA enables the model to learn relationships between image patches, allowing for global context understanding.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">MultiHeadAttentionBlock</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A single Multi-Head Self-Attention block with pre-layer normalization </span>
+<span class="sd">    and residual connection, as used in Transformer encoders.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        embedding_dim (int): Dimensionality of input embeddings.</span>
+<span class="sd">        num_heads (int): Number of attention heads.</span>
+<span class="sd">        attn_dropout (float): Dropout rate applied within attention mechanism.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">768</span><span class="p">,</span> <span class="n">num_heads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">12</span><span class="p">,</span> <span class="n">attn_dropout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="c1"># Layer normalization before attention (Pre-Norm)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">norm</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LayerNorm</span><span class="p">(</span><span class="n">embedding_dim</span><span class="p">)</span>
+
+        <span class="c1"># Multi-head self-attention layer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attn</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">MultiheadAttention</span><span class="p">(</span>
+            <span class="n">embed_dim</span><span class="o">=</span><span class="n">embedding_dim</span><span class="p">,</span>
+            <span class="n">num_heads</span><span class="o">=</span><span class="n">num_heads</span><span class="p">,</span>
+            <span class="n">dropout</span><span class="o">=</span><span class="n">attn_dropout</span><span class="p">,</span>
+            <span class="n">batch_first</span><span class="o">=</span><span class="kc">True</span>  <span class="c1"># Output shape: (B, N, D)</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            x (Tensor): Input tensor of shape (B, N, D)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Tensor: Output tensor of shape (B, N, D)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">x_norm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">attn_output</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attn</span><span class="p">(</span>
+            <span class="n">query</span><span class="o">=</span><span class="n">x_norm</span><span class="p">,</span>
+            <span class="n">key</span><span class="o">=</span><span class="n">x_norm</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">x_norm</span>
+        <span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">attn_output</span>  <span class="c1"># Residual connection</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="mlp-block">
+<h3><code class="docutils literal notranslate"><span class="pre">MLP</span></code> Block<a class="headerlink" href="#mlp-block" title="Link to this heading">#</a></h3>
+<p>The <strong>MLP Block</strong> in Vision Transformers follows each attention layer and helps the model learn complex transformations.</p>
+<ul class="simple">
+<li><p>Consists of two linear layers with a non-linear activation (typically <strong>GELU</strong>).</p></li>
+<li><p>Applies <strong>Layer Normalization</strong> before the MLP (Pre-Norm).</p></li>
+<li><p>Uses <strong>Dropout</strong> for regularization.</p></li>
+<li><p>Includes a <strong>residual connection</strong>: output = input + MLP(normalized input)</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">MLPBlock</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Feed-forward block used in Vision Transformers.</span>
+<span class="sd">    Applies LayerNorm, two linear layers with GELU activation, and dropout.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        embedding_dim (int): Input and output embedding dimension.</span>
+<span class="sd">        mlp_size (int): Hidden layer size in the MLP (usually 4x embedding_dim).</span>
+<span class="sd">        dropout (float): Dropout rate after each linear layer.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">768</span><span class="p">,</span> <span class="n">mlp_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3072</span><span class="p">,</span> <span class="n">dropout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">norm</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LayerNorm</span><span class="p">(</span><span class="n">embedding_dim</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">mlp</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">embedding_dim</span><span class="p">,</span> <span class="n">mlp_size</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">GELU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">dropout</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">mlp_size</span><span class="p">,</span> <span class="n">embedding_dim</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">dropout</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            x (Tensor): Input tensor of shape (B, N, D)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Tensor: Output tensor of same shape (B, N, D) after residual connection.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">x_norm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">mlp</span><span class="p">(</span><span class="n">x_norm</span><span class="p">)</span>  <span class="c1"># Residual connection</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="transformerencoder-block">
+<h3><code class="docutils literal notranslate"><span class="pre">TransformerEncoder</span></code> Block<a class="headerlink" href="#transformerencoder-block" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">TransformerEncoderBlock</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A single Transformer encoder block composed of:</span>
+<span class="sd">    - Multi-head self-attention with residual connection</span>
+<span class="sd">    - MLP block with residual connection</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        embedding_dim (int): Dimensionality of input embeddings.</span>
+<span class="sd">        num_heads (int): Number of attention heads.</span>
+<span class="sd">        mlp_size (int): Hidden layer size in the MLP.</span>
+<span class="sd">        mlp_dropout (float): Dropout rate in the MLP.</span>
+<span class="sd">        attn_dropout (float): Dropout rate in the attention layer.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">embedding_dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">768</span><span class="p">,</span>
+        <span class="n">num_heads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">12</span><span class="p">,</span>
+        <span class="n">mlp_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3072</span><span class="p">,</span>
+        <span class="n">mlp_dropout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">attn_dropout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attention</span> <span class="o">=</span> <span class="n">MultiHeadAttentionBlock</span><span class="p">(</span><span class="n">embedding_dim</span><span class="p">,</span> <span class="n">num_heads</span><span class="p">,</span> <span class="n">attn_dropout</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mlp</span> <span class="o">=</span> <span class="n">MLPBlock</span><span class="p">(</span><span class="n">embedding_dim</span><span class="p">,</span> <span class="n">mlp_size</span><span class="p">,</span> <span class="n">mlp_dropout</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            x (Tensor): Input of shape (B, N, D)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Tensor: Output of shape (B, N, D)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attention</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mlp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span>
+    
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot the summary of the transformer encoder</span>
+<span class="n">transformer_encoder_block</span> <span class="o">=</span> <span class="n">TransformerEncoderBlock</span><span class="p">()</span>
+
+<span class="n">summary</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">transformer_encoder_block</span><span class="p">,</span>
+    <span class="n">input_size</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">257</span><span class="p">,</span> <span class="mi">768</span><span class="p">),</span> <span class="c1"># (batch_size, num_patches + 1, embedding dimension),</span>
+    <span class="n">col_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;input_size&#39;</span><span class="p">,</span> <span class="s1">&#39;output_size&#39;</span><span class="p">,</span> <span class="s1">&#39;num_params&#39;</span><span class="p">,</span> <span class="s1">&#39;trainable&#39;</span><span class="p">],</span>
+    <span class="n">col_width</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="n">row_settings</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;var_names&#39;</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==================================================================================================================================
+Layer (type (var_name))                            Input Shape          Output Shape         Param #              Trainable
+==================================================================================================================================
+TransformerEncoderBlock (TransformerEncoderBlock)  [1, 257, 768]        [1, 257, 768]        --                   True
+├─MultiHeadAttentionBlock (attention)              [1, 257, 768]        [1, 257, 768]        --                   True
+│    └─LayerNorm (norm)                            [1, 257, 768]        [1, 257, 768]        1,536                True
+│    └─MultiheadAttention (attn)                   --                   [1, 257, 768]        2,362,368            True
+├─MLPBlock (mlp)                                   [1, 257, 768]        [1, 257, 768]        --                   True
+│    └─LayerNorm (norm)                            [1, 257, 768]        [1, 257, 768]        1,536                True
+│    └─Sequential (mlp)                            [1, 257, 768]        [1, 257, 768]        --                   True
+│    │    └─Linear (0)                             [1, 257, 768]        [1, 257, 3072]       2,362,368            True
+│    │    └─GELU (1)                               [1, 257, 3072]       [1, 257, 3072]       --                   --
+│    │    └─Dropout (2)                            [1, 257, 3072]       [1, 257, 3072]       --                   --
+│    │    └─Linear (3)                             [1, 257, 3072]       [1, 257, 768]        2,360,064            True
+│    │    └─Dropout (4)                            [1, 257, 768]        [1, 257, 768]        --                   --
+==================================================================================================================================
+Total params: 7,087,872
+Trainable params: 7,087,872
+Non-trainable params: 0
+Total mult-adds (M): 4.73
+==================================================================================================================================
+Input size (MB): 0.79
+Forward/backward pass size (MB): 11.05
+Params size (MB): 18.90
+Estimated Total Size (MB): 30.74
+==================================================================================================================================
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="visiontransformer">
+<h3><code class="docutils literal notranslate"><span class="pre">VisionTransformer</span></code><a class="headerlink" href="#visiontransformer" title="Link to this heading">#</a></h3>
+<p>The Vision Transformer (ViT) model applies transformer architecture to image classification tasks. Instead of using convolutions, the image is divided into non-overlapping patches, each treated as a token, which is then processed by transformer layers.</p>
+<p><strong>Key Components:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Patch Embedding</strong>: The image is split into fixed-size patches, and each patch is embedded into a vector using a linear projection.</p></li>
+<li><p><strong>Transformer Encoder</strong>: A series of transformer encoder blocks processes the embedded patches. These blocks consist of multi-head self-attention and MLP blocks, both with residual connections.</p></li>
+<li><p><strong>Classification Head</strong>: The output of the class token (added at the beginning of the sequence) is passed through a linear layer to predict the class label.</p></li>
+</ol>
+<p><strong>Output</strong>: Class logits for classification.</p>
+<p>ViT offers a powerful alternative to convolutional neural networks (CNNs) by leveraging self-attention to learn global relationships between image patches.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">ViT</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Vision Transformer (ViT) model for image classification.</span>
+<span class="sd">        The model uses Transformer encoder layers with patch-based image embeddings.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            img_size (int): Image size (height and width). Should be divisible by patch_size.</span>
+<span class="sd">            in_channels (int): Number of input channels in the image (default: 3 for RGB).</span>
+<span class="sd">            patch_size (int): Size of each patch (e.g., 16 for 16x16 patches).</span>
+<span class="sd">            embedding_dim (int): Embedding dimension for patch embeddings and transformer layers.</span>
+<span class="sd">            embedding_dropout (float): Dropout rate applied to patch embeddings.</span>
+<span class="sd">            num_transformer_layers (int): Number of transformer encoder layers.</span>
+<span class="sd">            num_heads (int): Number of attention heads in multi-head attention.</span>
+<span class="sd">            attn_dropout (float): Dropout rate applied in multi-head attention.</span>
+<span class="sd">            mlp_size (int): Hidden size of MLP layers in transformer blocks.</span>
+<span class="sd">            mlp_dropout (float): Dropout rate applied in the MLP layers.</span>
+<span class="sd">            num_classes (int): Number of output classes for classification.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">img_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span>
+                 <span class="n">in_channels</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+                 <span class="n">patch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+                 <span class="n">embedding_dim</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">768</span><span class="p">,</span>
+                 <span class="n">embedding_dropout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+                 <span class="n">num_transformer_layers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">12</span><span class="p">,</span>
+                 <span class="n">num_heads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">12</span><span class="p">,</span>
+                 <span class="n">attn_dropout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+                 <span class="n">mlp_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3072</span><span class="p">,</span>
+                 <span class="n">mlp_dropout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+                 <span class="n">num_classes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="c1"># Assert image size is divisible by patch size</span>
+        <span class="k">assert</span> <span class="n">img_size</span> <span class="o">%</span> <span class="n">patch_size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;Image size must be divisible by patch size. Got image size: </span><span class="si">{</span><span class="n">img_size</span><span class="si">}</span><span class="s2">, patch size: </span><span class="si">{</span><span class="n">patch_size</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="c1"># Dropout layer for embeddings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">embedding_dropout</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="n">embedding_dropout</span><span class="p">)</span>  <span class="c1"># Ensure p is a float value (probability)</span>
+
+        <span class="c1"># Patch embedding layer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">patch_embedding</span> <span class="o">=</span> <span class="n">PatchEmbedding</span><span class="p">(</span>
+            <span class="n">in_channels</span><span class="o">=</span><span class="n">in_channels</span><span class="p">,</span>
+            <span class="n">patch_size</span><span class="o">=</span><span class="n">patch_size</span><span class="p">,</span>
+            <span class="n">embedding_dim</span><span class="o">=</span><span class="n">embedding_dim</span><span class="p">,</span>
+            <span class="n">image_size</span><span class="o">=</span><span class="n">img_size</span><span class="p">,</span>
+            <span class="n">dropout</span><span class="o">=</span><span class="n">embedding_dropout</span>  <span class="c1"># Make sure this is passed as a float, not a layer object</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Transformer encoder layers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transformer_encoder</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="o">*</span><span class="p">[</span><span class="n">TransformerEncoderBlock</span><span class="p">(</span>
+                <span class="n">embedding_dim</span><span class="o">=</span><span class="n">embedding_dim</span><span class="p">,</span>
+                <span class="n">num_heads</span><span class="o">=</span><span class="n">num_heads</span><span class="p">,</span>
+                <span class="n">mlp_size</span><span class="o">=</span><span class="n">mlp_size</span><span class="p">,</span>
+                <span class="n">mlp_dropout</span><span class="o">=</span><span class="n">mlp_dropout</span><span class="p">,</span>
+                <span class="n">attn_dropout</span><span class="o">=</span><span class="n">attn_dropout</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_transformer_layers</span><span class="p">)]</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Classifier head: Final Linear Layer for Classification</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">classifier</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">LayerNorm</span><span class="p">(</span><span class="n">embedding_dim</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">embedding_dim</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Forward pass for the Vision Transformer.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x (Tensor): Input tensor of shape (B, C, H, W), where B is batch size, </span>
+<span class="sd">                        C is number of channels, and H, W are image height and width.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Tensor: Predicted class logits of shape (B, num_classes)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Apply patch embedding to the input</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">patch_embedding</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="c1"># Pass through Transformer Encoder</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformer_encoder</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="c1"># Use the output from the class token for classification (the first token in the sequence)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">classifier</span><span class="p">(</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>  <span class="c1"># The class token is the first token (index 0)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="training">
+<h2>Training<a class="headerlink" href="#training" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get pretrained weights for ViT-Base</span>
+<span class="n">pretrained_vit</span> <span class="o">=</span> <span class="n">torchvision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">vit_b_16</span><span class="p">(</span><span class="n">weights</span><span class="o">=</span><span class="n">torchvision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">ViT_B_16_Weights</span><span class="o">.</span><span class="n">DEFAULT</span><span class="p">)</span>
+<span class="n">pretrained_state_dict</span> <span class="o">=</span> <span class="n">pretrained_vit</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()</span>
+
+<span class="c1"># Create ViT model instance</span>
+<span class="n">vit</span> <span class="o">=</span> <span class="n">ViT</span><span class="p">(</span><span class="n">num_classes</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">class_to_idx</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+
+<span class="c1"># Build a new state dict by remapping keys</span>
+<span class="n">remapped_state_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">new_key</span><span class="p">,</span> <span class="n">old_key</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">vit</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">pretrained_state_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+    <span class="k">if</span> <span class="n">pretrained_state_dict</span><span class="p">[</span><span class="n">old_key</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">vit</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()[</span><span class="n">new_key</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+        <span class="n">remapped_state_dict</span><span class="p">[</span><span class="n">new_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">pretrained_state_dict</span><span class="p">[</span><span class="n">old_key</span><span class="p">]</span>
+            
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Skipping </span><span class="si">{</span><span class="n">old_key</span><span class="si">}</span><span class="s2"> → </span><span class="si">{</span><span class="n">new_key</span><span class="si">}</span><span class="s2"> due to shape mismatch: &quot;</span>
+              <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pretrained_state_dict</span><span class="p">[</span><span class="n">old_key</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> vs </span><span class="si">{</span><span class="n">vit</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()[</span><span class="n">new_key</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Load the model weights</span>
+<span class="n">vit</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">remapped_state_dict</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Print the summary of the model</span>
+<span class="n">summary</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">vit</span><span class="p">,</span>
+    <span class="n">input_size</span><span class="o">=</span><span class="p">(</span><span class="n">BATCH_SIZE</span><span class="p">,</span> <span class="n">NUM_CHANNELS</span><span class="p">,</span> <span class="n">IMG_SIZE</span><span class="p">,</span> <span class="n">IMG_SIZE</span><span class="p">),</span> <span class="c1"># (batch_size, num of channels, height, width),</span>
+    <span class="n">col_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;input_size&#39;</span><span class="p">,</span> <span class="s1">&#39;output_size&#39;</span><span class="p">,</span> <span class="s1">&#39;num_params&#39;</span><span class="p">,</span> <span class="s1">&#39;trainable&#39;</span><span class="p">],</span>
+    <span class="n">col_width</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="n">row_settings</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;var_names&#39;</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Skipping conv_proj.weight → patch_embedding.position_embedding due to shape mismatch: torch.Size([768, 3, 16, 16]) vs torch.Size([1, 257, 768])
+Skipping conv_proj.bias → patch_embedding.projection.weight due to shape mismatch: torch.Size([768]) vs torch.Size([768, 3, 16, 16])
+Skipping encoder.pos_embedding → patch_embedding.projection.bias due to shape mismatch: torch.Size([1, 197, 768]) vs torch.Size([768])
+Skipping heads.head.weight → classifier.1.weight due to shape mismatch: torch.Size([1000, 768]) vs torch.Size([4, 768])
+Skipping heads.head.bias → classifier.1.bias due to shape mismatch: torch.Size([1000]) vs torch.Size([4])
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======================================================================================================================================
+Layer (type (var_name))                                 Input Shape          Output Shape         Param #              Trainable
+=======================================================================================================================================
+ViT (ViT)                                               [32, 3, 256, 256]    [32, 4]              --                   True
+├─PatchEmbedding (patch_embedding)                      [32, 3, 256, 256]    [32, 257, 768]       198,144              True
+│    └─Conv2d (projection)                              [32, 3, 256, 256]    [32, 768, 16, 16]    590,592              True
+│    └─Dropout (dropout)                                [32, 257, 768]       [32, 257, 768]       --                   --
+├─Sequential (transformer_encoder)                      [32, 257, 768]       [32, 257, 768]       --                   True
+│    └─TransformerEncoderBlock (0)                      [32, 257, 768]       [32, 257, 768]       --                   True
+│    │    └─MultiHeadAttentionBlock (attention)         [32, 257, 768]       [32, 257, 768]       2,363,904            True
+│    │    └─MLPBlock (mlp)                              [32, 257, 768]       [32, 257, 768]       4,723,968            True
+│    └─TransformerEncoderBlock (1)                      [32, 257, 768]       [32, 257, 768]       --                   True
+│    │    └─MultiHeadAttentionBlock (attention)         [32, 257, 768]       [32, 257, 768]       2,363,904            True
+│    │    └─MLPBlock (mlp)                              [32, 257, 768]       [32, 257, 768]       4,723,968            True
+│    └─TransformerEncoderBlock (2)                      [32, 257, 768]       [32, 257, 768]       --                   True
+│    │    └─MultiHeadAttentionBlock (attention)         [32, 257, 768]       [32, 257, 768]       2,363,904            True
+│    │    └─MLPBlock (mlp)                              [32, 257, 768]       [32, 257, 768]       4,723,968            True
+│    └─TransformerEncoderBlock (3)                      [32, 257, 768]       [32, 257, 768]       --                   True
+│    │    └─MultiHeadAttentionBlock (attention)         [32, 257, 768]       [32, 257, 768]       2,363,904            True
+│    │    └─MLPBlock (mlp)                              [32, 257, 768]       [32, 257, 768]       4,723,968            True
+│    └─TransformerEncoderBlock (4)                      [32, 257, 768]       [32, 257, 768]       --                   True
+│    │    └─MultiHeadAttentionBlock (attention)         [32, 257, 768]       [32, 257, 768]       2,363,904            True
+│    │    └─MLPBlock (mlp)                              [32, 257, 768]       [32, 257, 768]       4,723,968            True
+│    └─TransformerEncoderBlock (5)                      [32, 257, 768]       [32, 257, 768]       --                   True
+│    │    └─MultiHeadAttentionBlock (attention)         [32, 257, 768]       [32, 257, 768]       2,363,904            True
+│    │    └─MLPBlock (mlp)                              [32, 257, 768]       [32, 257, 768]       4,723,968            True
+│    └─TransformerEncoderBlock (6)                      [32, 257, 768]       [32, 257, 768]       --                   True
+│    │    └─MultiHeadAttentionBlock (attention)         [32, 257, 768]       [32, 257, 768]       2,363,904            True
+│    │    └─MLPBlock (mlp)                              [32, 257, 768]       [32, 257, 768]       4,723,968            True
+│    └─TransformerEncoderBlock (7)                      [32, 257, 768]       [32, 257, 768]       --                   True
+│    │    └─MultiHeadAttentionBlock (attention)         [32, 257, 768]       [32, 257, 768]       2,363,904            True
+│    │    └─MLPBlock (mlp)                              [32, 257, 768]       [32, 257, 768]       4,723,968            True
+│    └─TransformerEncoderBlock (8)                      [32, 257, 768]       [32, 257, 768]       --                   True
+│    │    └─MultiHeadAttentionBlock (attention)         [32, 257, 768]       [32, 257, 768]       2,363,904            True
+│    │    └─MLPBlock (mlp)                              [32, 257, 768]       [32, 257, 768]       4,723,968            True
+│    └─TransformerEncoderBlock (9)                      [32, 257, 768]       [32, 257, 768]       --                   True
+│    │    └─MultiHeadAttentionBlock (attention)         [32, 257, 768]       [32, 257, 768]       2,363,904            True
+│    │    └─MLPBlock (mlp)                              [32, 257, 768]       [32, 257, 768]       4,723,968            True
+│    └─TransformerEncoderBlock (10)                     [32, 257, 768]       [32, 257, 768]       --                   True
+│    │    └─MultiHeadAttentionBlock (attention)         [32, 257, 768]       [32, 257, 768]       2,363,904            True
+│    │    └─MLPBlock (mlp)                              [32, 257, 768]       [32, 257, 768]       4,723,968            True
+│    └─TransformerEncoderBlock (11)                     [32, 257, 768]       [32, 257, 768]       --                   True
+│    │    └─MultiHeadAttentionBlock (attention)         [32, 257, 768]       [32, 257, 768]       2,363,904            True
+│    │    └─MLPBlock (mlp)                              [32, 257, 768]       [32, 257, 768]       4,723,968            True
+├─Sequential (classifier)                               [32, 768]            [32, 4]              --                   True
+│    └─LayerNorm (0)                                    [32, 768]            [32, 768]            1,536                True
+│    └─Linear (1)                                       [32, 768]            [32, 4]              3,076                True
+=======================================================================================================================================
+Total params: 85,847,812
+Trainable params: 85,847,812
+Non-trainable params: 0
+Total mult-adds (G): 6.65
+=======================================================================================================================================
+Input size (MB): 25.17
+Forward/backward pass size (MB): 4294.90
+Params size (MB): 229.21
+Estimated Total Size (MB): 4549.27
+=======================================================================================================================================
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Setup optimizer with a better learning rate</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">AdamW</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="n">vit</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span>
+                              <span class="n">lr</span><span class="o">=</span><span class="mf">3e-4</span><span class="p">,</span>  <span class="c1"># more stable</span>
+                              <span class="n">betas</span><span class="o">=</span><span class="p">(</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">),</span>
+                              <span class="n">weight_decay</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="c1"># Define loss function</span>
+<span class="n">loss_fn</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
+
+<span class="c1"># Train the model</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">vit</span><span class="p">,</span>
+                       <span class="n">train_dataloader</span><span class="o">=</span><span class="n">train_dataloader</span><span class="p">,</span>
+                       <span class="n">test_dataloader</span><span class="o">=</span><span class="n">test_dataloader</span><span class="p">,</span>
+                       <span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span><span class="p">,</span>
+                       <span class="n">loss_fn</span><span class="o">=</span><span class="n">loss_fn</span><span class="p">,</span>
+                       <span class="n">epochs</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+                       <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  2%|▏         | 1/50 [03:48&lt;3:06:51, 228.80s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 1 | train_loss: 1.0329 | train_acc: 0.5415 | test_loss: 0.8472 | test_acc: 0.5992
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  4%|▍         | 2/50 [09:49&lt;4:05:07, 306.41s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 2 | train_loss: 0.7618 | train_acc: 0.6663 | test_loss: 0.7301 | test_acc: 0.6902
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  6%|▌         | 3/50 [14:13&lt;3:44:47, 286.97s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 3 | train_loss: 0.5544 | train_acc: 0.7840 | test_loss: 0.4017 | test_acc: 0.8364
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  8%|▊         | 4/50 [20:18&lt;4:03:48, 318.01s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 4 | train_loss: 0.4074 | train_acc: 0.8335 | test_loss: 0.4176 | test_acc: 0.8410
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 10%|█         | 5/50 [25:31&lt;3:56:58, 315.97s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 5 | train_loss: 0.3686 | train_acc: 0.8482 | test_loss: 0.4017 | test_acc: 0.8434
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 12%|█▏        | 6/50 [31:33&lt;4:03:19, 331.80s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 6 | train_loss: 0.3236 | train_acc: 0.8660 | test_loss: 0.3722 | test_acc: 0.8422
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 14%|█▍        | 7/50 [36:58&lt;3:56:10, 329.55s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 7 | train_loss: 0.3091 | train_acc: 0.8772 | test_loss: 0.3713 | test_acc: 0.8422
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 16%|█▌        | 8/50 [41:55&lt;3:43:23, 319.14s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 8 | train_loss: 0.2952 | train_acc: 0.8779 | test_loss: 0.4274 | test_acc: 0.8376
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 18%|█▊        | 9/50 [46:22&lt;3:26:57, 302.87s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 9 | train_loss: 0.2783 | train_acc: 0.8915 | test_loss: 0.3302 | test_acc: 0.8700
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 20%|██        | 10/50 [52:20&lt;3:33:08, 319.71s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 10 | train_loss: 0.2595 | train_acc: 0.8931 | test_loss: 0.2961 | test_acc: 0.8827
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 22%|██▏       | 11/50 [59:13&lt;3:46:30, 348.47s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 11 | train_loss: 0.2507 | train_acc: 0.9016 | test_loss: 0.2930 | test_acc: 0.8827
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 24%|██▍       | 12/50 [1:04:46&lt;3:37:39, 343.66s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 12 | train_loss: 0.2438 | train_acc: 0.9043 | test_loss: 0.3037 | test_acc: 0.8727
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 26%|██▌       | 13/50 [1:10:55&lt;3:36:37, 351.30s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 13 | train_loss: 0.2318 | train_acc: 0.9064 | test_loss: 0.2580 | test_acc: 0.9016
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 28%|██▊       | 14/50 [1:16:16&lt;3:25:17, 342.16s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 14 | train_loss: 0.2032 | train_acc: 0.9241 | test_loss: 0.2550 | test_acc: 0.8935
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 30%|███       | 15/50 [1:22:00&lt;3:19:57, 342.79s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 15 | train_loss: 0.1915 | train_acc: 0.9253 | test_loss: 0.2299 | test_acc: 0.9097
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 32%|███▏      | 16/50 [1:27:48&lt;3:15:09, 344.39s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 16 | train_loss: 0.1841 | train_acc: 0.9281 | test_loss: 0.2557 | test_acc: 0.9005
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 34%|███▍      | 17/50 [1:34:05&lt;3:14:44, 354.09s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 17 | train_loss: 0.1968 | train_acc: 0.9216 | test_loss: 0.2945 | test_acc: 0.9012
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 36%|███▌      | 18/50 [1:38:41&lt;2:56:25, 330.78s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 18 | train_loss: 0.1696 | train_acc: 0.9333 | test_loss: 0.2440 | test_acc: 0.9155
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 38%|███▊      | 19/50 [1:44:02&lt;2:49:23, 327.84s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 19 | train_loss: 0.1525 | train_acc: 0.9390 | test_loss: 0.2517 | test_acc: 0.9062
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 40%|████      | 20/50 [1:50:15&lt;2:50:34, 341.16s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 20 | train_loss: 0.1651 | train_acc: 0.9321 | test_loss: 0.2545 | test_acc: 0.9097
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 42%|████▏     | 21/50 [1:55:23&lt;2:40:10, 331.38s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 21 | train_loss: 0.1499 | train_acc: 0.9414 | test_loss: 0.2550 | test_acc: 0.8958
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 44%|████▍     | 22/50 [2:00:45&lt;2:33:20, 328.60s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 22 | train_loss: 0.1338 | train_acc: 0.9506 | test_loss: 0.2523 | test_acc: 0.9093
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 46%|████▌     | 23/50 [2:05:02&lt;2:18:11, 307.09s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 23 | train_loss: 0.1133 | train_acc: 0.9563 | test_loss: 0.2760 | test_acc: 0.9062
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 48%|████▊     | 24/50 [2:10:00&lt;2:11:50, 304.27s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 24 | train_loss: 0.1274 | train_acc: 0.9539 | test_loss: 0.2368 | test_acc: 0.9144
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 50%|█████     | 25/50 [2:16:06&lt;2:14:26, 322.68s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 25 | train_loss: 0.1147 | train_acc: 0.9576 | test_loss: 0.2789 | test_acc: 0.9028
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 52%|█████▏    | 26/50 [2:20:12&lt;1:59:57, 299.89s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 26 | train_loss: 0.1593 | train_acc: 0.9405 | test_loss: 0.3003 | test_acc: 0.8978
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 54%|█████▍    | 27/50 [2:25:31&lt;1:57:10, 305.68s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 27 | train_loss: 0.1642 | train_acc: 0.9366 | test_loss: 0.2196 | test_acc: 0.9144
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 56%|█████▌    | 28/50 [2:31:51&lt;2:00:11, 327.80s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 28 | train_loss: 0.1104 | train_acc: 0.9558 | test_loss: 0.2570 | test_acc: 0.9132
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 58%|█████▊    | 29/50 [2:37:27&lt;1:55:35, 330.28s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 29 | train_loss: 0.0963 | train_acc: 0.9629 | test_loss: 0.2596 | test_acc: 0.9120
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 60%|██████    | 30/50 [2:43:28&lt;1:53:08, 339.41s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 30 | train_loss: 0.0839 | train_acc: 0.9698 | test_loss: 0.2759 | test_acc: 0.9213
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 62%|██████▏   | 31/50 [2:48:17&lt;1:42:45, 324.51s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 31 | train_loss: 0.1069 | train_acc: 0.9554 | test_loss: 0.2718 | test_acc: 0.9132
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 64%|██████▍   | 32/50 [2:54:04&lt;1:39:19, 331.10s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 32 | train_loss: 0.0800 | train_acc: 0.9690 | test_loss: 0.2845 | test_acc: 0.9178
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 66%|██████▌   | 33/50 [2:59:40&lt;1:34:12, 332.52s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 33 | train_loss: 0.0766 | train_acc: 0.9684 | test_loss: 0.3371 | test_acc: 0.9190
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 68%|██████▊   | 34/50 [3:03:23&lt;1:19:56, 299.79s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 34 | train_loss: 0.0852 | train_acc: 0.9664 | test_loss: 0.5548 | test_acc: 0.8426
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 70%|███████   | 35/50 [3:07:37&lt;1:11:28, 285.91s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 35 | train_loss: 0.0982 | train_acc: 0.9638 | test_loss: 0.3268 | test_acc: 0.8970
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 72%|███████▏  | 36/50 [3:13:20&lt;1:10:45, 303.23s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 36 | train_loss: 0.0696 | train_acc: 0.9754 | test_loss: 0.2997 | test_acc: 0.9035
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 74%|███████▍  | 37/50 [3:18:07&lt;1:04:36, 298.17s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 37 | train_loss: 0.0599 | train_acc: 0.9768 | test_loss: 0.3593 | test_acc: 0.9178
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 76%|███████▌  | 38/50 [3:24:08&lt;1:03:26, 317.22s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 38 | train_loss: 0.0647 | train_acc: 0.9769 | test_loss: 0.3102 | test_acc: 0.9178
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 78%|███████▊  | 39/50 [3:29:27&lt;58:13, 317.57s/it]  
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 39 | train_loss: 0.0598 | train_acc: 0.9792 | test_loss: 0.3822 | test_acc: 0.9028
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 80%|████████  | 40/50 [3:33:15&lt;48:27, 290.80s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 40 | train_loss: 0.0545 | train_acc: 0.9799 | test_loss: 0.3338 | test_acc: 0.9097
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 82%|████████▏ | 41/50 [3:38:34&lt;44:54, 299.35s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 41 | train_loss: 0.0459 | train_acc: 0.9812 | test_loss: 0.3959 | test_acc: 0.8924
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 84%|████████▍ | 42/50 [3:44:17&lt;41:37, 312.24s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 42 | train_loss: 0.0622 | train_acc: 0.9783 | test_loss: 0.4461 | test_acc: 0.8808
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 86%|████████▌ | 43/50 [3:49:58&lt;37:27, 321.03s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 43 | train_loss: 0.0601 | train_acc: 0.9781 | test_loss: 0.3493 | test_acc: 0.8993
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 88%|████████▊ | 44/50 [3:53:52&lt;29:28, 294.79s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 44 | train_loss: 0.0454 | train_acc: 0.9845 | test_loss: 0.3399 | test_acc: 0.9097
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 90%|█████████ | 45/50 [3:59:21&lt;25:26, 305.23s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 45 | train_loss: 0.0396 | train_acc: 0.9862 | test_loss: 0.4017 | test_acc: 0.8970
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 92%|█████████▏| 46/50 [4:03:30&lt;19:13, 288.35s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 46 | train_loss: 0.0474 | train_acc: 0.9833 | test_loss: 0.3390 | test_acc: 0.9051
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 94%|█████████▍| 47/50 [4:07:52&lt;14:01, 280.46s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 47 | train_loss: 0.0589 | train_acc: 0.9795 | test_loss: 0.2958 | test_acc: 0.9097
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 96%|█████████▌| 48/50 [4:11:39&lt;08:48, 264.46s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 48 | train_loss: 0.0496 | train_acc: 0.9839 | test_loss: 0.3752 | test_acc: 0.8993
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 98%|█████████▊| 49/50 [4:16:52&lt;04:38, 278.87s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 49 | train_loss: 0.0645 | train_acc: 0.9769 | test_loss: 0.4064 | test_acc: 0.8920
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 50/50 [4:20:08&lt;00:00, 312.17s/it]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch: 50 | train_loss: 0.0523 | train_acc: 0.9798 | test_loss: 0.3424 | test_acc: 0.9051
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Save the model</span>
+<span class="c1"># torch.save(vit.state_dict(), os.path.join(out_model_dir, &#39;maize_leaf_disease_vit_model_weights.pth&#39;))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="make-predictions">
+<h2>Make Predictions<a class="headerlink" href="#make-predictions" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">random_image_id</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">))</span>
+<span class="n">random_image_path</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">image_paths</span><span class="p">[</span><span class="n">random_image_id</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Random Image Path:&#39;</span><span class="p">,</span> <span class="n">random_image_path</span><span class="p">)</span>
+
+<span class="n">pred_and_plot_image</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">vit</span><span class="p">,</span>
+    <span class="n">class_names</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">class_to_idx</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
+    <span class="n">image_path</span><span class="o">=</span><span class="n">random_image_path</span><span class="p">,</span>
+    <span class="n">transform</span><span class="o">=</span><span class="n">manual_transforms</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Random Image Path: data\images\Blight\Corn_Blight (742).JPG
+</pre></div>
+</div>
+<img alt="../_images/c1599b9020b37b40948c454575ee9f60a2500b4e5bc0900cfb031d41af1f7971.png" src="../_images/c1599b9020b37b40948c454575ee9f60a2500b4e5bc0900cfb031d41af1f7971.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">random_image_id</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">))</span>
+<span class="n">random_image_path</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">image_paths</span><span class="p">[</span><span class="n">random_image_id</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Random Image Path:&#39;</span><span class="p">,</span> <span class="n">random_image_path</span><span class="p">)</span>
+
+<span class="n">pred_and_plot_image</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">vit</span><span class="p">,</span>
+    <span class="n">class_names</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">class_to_idx</span><span class="o">.</span><span class="n">keys</span><span class="p">()),</span>
+    <span class="n">image_path</span><span class="o">=</span><span class="n">random_image_path</span><span class="p">,</span>
+    <span class="n">transform</span><span class="o">=</span><span class="n">manual_transforms</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Random Image Path: data\images\Gray_Leaf_Spot\Corn_Gray_Spot (520).JPG
+</pre></div>
+</div>
+<img alt="../_images/83ca18d975ead2be4b295cc5d7420128426617ef8028e8f994bc95ad8441724b.png" src="../_images/83ca18d975ead2be4b295cc5d7420128426617ef8028e8f994bc95ad8441724b.png" />
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./book"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Welcome to your Jupyter Book</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="markdown.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Markdown Files</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#import-dependencies">Import Dependencies</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-the-configurations">Define the Configurations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-and-dataloader">Dataset and DataLoader</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-building">Model Building</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#patchembedding-class"><code class="docutils literal notranslate"><span class="pre">PatchEmbedding</span></code> class</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-head-attention-mha-block"><code class="docutils literal notranslate"><span class="pre">Multi-Head</span> <span class="pre">Attention</span></code> (MHA) Block</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mlp-block"><code class="docutils literal notranslate"><span class="pre">MLP</span></code> Block</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transformerencoder-block"><code class="docutils literal notranslate"><span class="pre">TransformerEncoder</span></code> Block</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visiontransformer"><code class="docutils literal notranslate"><span class="pre">VisionTransformer</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training">Training</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#make-predictions">Make Predictions</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Krishnagopal Halder
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
